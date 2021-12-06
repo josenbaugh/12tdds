@@ -1,0 +1,29 @@
+{
+  "name": "swkberlin/php",
+  "description": "Shell project for PHP testing",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Damijan Cavar",
+      "email": "damijanc@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8",
+    "phpunit/phpunit": "^8"
+  },
+  "require-dev": {
+    "mockery/mockery": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "tdd\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "tdd\\": "tests/"
+    }
+  },
+  "minimum-stability": "dev"
+}
