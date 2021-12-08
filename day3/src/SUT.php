@@ -20,6 +20,25 @@ class SUT
 
     public function runCommand(string $command): int
     {
+        $command = $this->parseCommand($command);
+        $this->flipSwitches($command);
+        return $this->calculateOn();
+    }
+
+    private function calculateOn(): int
+    {
+        $lights_on = 0;
+        for ($i = 0; $i < 1000; $i++) {
+            for ($j = 0; $j < 1000; $j++) {
+                    $lights_on += $this->grid[$i][$j];
+            }
+        }
+
+        return $lights_on;
+    }
+
+    private function parseCommand(string $command): Command
+    {
         $command = \explode(' ', $command);
         $operation = $command[0];
         $coordinates = \explode('-', $command[1]);
@@ -30,22 +49,18 @@ class SUT
         $x2 = $p2[0];
         $y2 = $p2[1];
 
-        for ($i = $x1; $i <= $x2; $i++) {
-            for ($j = $y1; $j <= $y2; $j++) {
-                if ($operation == 'on')
+        return new Command($operation, $x1, $y1, $x2, $y2);
+    }
+
+    private function flipSwitches(Command $command): void
+    {
+        for ($i = $command->x1; $i <= $command->x2; $i++) {
+            for ($j = $command->y1; $j <= $command->y2; $j++) {
+                if ($command->operation == 'on')
                     $this->grid[$i][$j] = 1;
                 else
                     $this->grid[$i][$j] = 0;
             }
         }
-        
-        $lights_on = 0;
-        for ($i = 0; $i < 1000; $i++) {
-            for ($j = 0; $j < 1000; $j++) {
-                    $lights_on += $this->grid[$i][$j];
-            }
-        }
-
-        return $lights_on;
     }
 }
