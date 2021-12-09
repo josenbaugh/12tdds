@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace tdd;
 
 use Generator;
 use PHPUnit\Framework\TestCase;
