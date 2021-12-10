@@ -54,3 +54,12 @@ TDD Tip
 Like last time the provided test input assumes the state of the last case. Does
 this new requirement change your original design? Is any of your past code (test
 or otherwise) useful for this case?
+
+
+
+My Thoughts
+-----------
+I think that most of what we had before is still useful with the design change.
+The test just needs to change the expected output and they way I did the
+solution I broke it into three steps with their own functions and two of those
+are still valid.
