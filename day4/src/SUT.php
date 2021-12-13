@@ -11,9 +11,14 @@ class SUT
 
     public function __construct()
     {
+        $this->resetGrid();
+    }
+
+    private function resetGrid():void
+    {
         for ($i = 0; $i < 1000; $i++) {
             for ($j = 0; $j < 1000; $j++) {
-                    $this->grid[$i][$j] = 0;
+                $this->grid[$i][$j] = 0;
             }
         }
     }
@@ -25,7 +30,6 @@ class SUT
         return $this->generateMicrocontrollerCommand();
     }
 
-
     private function generateMicrocontrollerCommand(): string
     {
         return $this->combineSequences($this->getLEDSequence());
@@ -33,17 +37,17 @@ class SUT
 
     private function combineSequences(array $sequence): string
     {
-        print_r($sequence);
         $return = [];
         $part_seq = [];
-        for ($i = 1; $i < \count($sequence); $i++) {
-            if ($sequence[$i] === $sequence[$i-1]+1) {
-                $part_seq[] = $sequence[$i-1];
+        for ($i = 0; $i < \count($sequence); $i++) {
+            if (isset($sequence[$i+1]) && $sequence[$i]+1 === $sequence[$i+1]) {
                 $part_seq[] = $sequence[$i];
+                $part_seq[] = $sequence[$i+1];
             } else {
-                if ($part_seq === []) {
-                    $return[] = (string)$sequence[$i];
+                if ($part_seq == []) {
+                    $return[] = (string)$sequence[$i] . '-' . (string)$sequence[$i];
                 } else {
+                    $part_seq[] = $sequence[$i];
                     $c = \count($part_seq)-1;
                     $return[] = (string)$part_seq[0] . '-' . (string)$part_seq[$c];
                     $part_seq = [];
@@ -51,11 +55,10 @@ class SUT
             }
         }
 
-        // if ($part_seq !== []) {
-        //     $c = \count($part_seq)-1;
-        //     $return[] = (string)$part_seq[0] . '-' . (string)$part_seq[$c];
-        //     $part_seq = [];
-        // }
+        if ($part_seq !== []) {
+            $c = \count($part_seq)-1;
+            $return = \array_merge($return, [(string)$part_seq[0] . '-' . (string)$part_seq[$c]]);
+        }
 
         return \implode(',', $return);
     }
