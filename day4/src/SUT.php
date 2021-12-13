@@ -5,7 +5,7 @@ namespace tdd;
 class SUT
 {
     /**
-     * @var int[]
+     * @var int[][]
      */
     private $grid;
 
@@ -25,24 +25,57 @@ class SUT
         return $this->generateMicrocontrollerCommand();
     }
 
+
     private function generateMicrocontrollerCommand(): string
     {
-        return '';
+        return $this->combineSequences($this->getLEDSequence());
     }
 
-    /**
-     * @deprecated
-     */
-    private function calculateOn(): int
+    private function combineSequences(array $sequence): string
     {
-        $lights_on = 0;
-        for ($i = 0; $i < 1000; $i++) {
-            for ($j = 0; $j < 1000; $j++) {
-                    $lights_on += $this->grid[$i][$j];
+        print_r($sequence);
+        $return = [];
+        $part_seq = [];
+        for ($i = 1; $i < \count($sequence); $i++) {
+            if ($sequence[$i] === $sequence[$i-1]+1) {
+                $part_seq[] = $sequence[$i-1];
+                $part_seq[] = $sequence[$i];
+            } else {
+                if ($part_seq === []) {
+                    $return[] = (string)$sequence[$i];
+                } else {
+                    $c = \count($part_seq)-1;
+                    $return[] = (string)$part_seq[0] . '-' . (string)$part_seq[$c];
+                    $part_seq = [];
+                }
             }
         }
 
-        return $lights_on;
+        // if ($part_seq !== []) {
+        //     $c = \count($part_seq)-1;
+        //     $return[] = (string)$part_seq[0] . '-' . (string)$part_seq[$c];
+        //     $part_seq = [];
+        // }
+
+        return \implode(',', $return);
+    }
+
+    private function getLEDSequence(): array
+    {
+        $out = [];
+        for ($i = 0; $i < 1000; $i++) {
+            $on = \array_keys($this->grid[$i], 1, true);
+            foreach ($on as $led) {
+                $out[] = $led + ($i*1000);
+            }
+        }
+
+        return $out;
+    }
+
+    private function calculateOn(): int
+    {
+        return count($this->getLEDSequence());
     }
 
     private function parseCommand(string $command): Command
