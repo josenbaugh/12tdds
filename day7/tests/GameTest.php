@@ -36,12 +36,14 @@ class GameTest extends TestCase
 
         $game->roll(1);
         $game->wrongAnswer(); //maul goes to the penalty box
+        self::assertTrue($game->inPenaltyBox[1]);
 
         $game->roll(2);
         $game->wasCorrectlyAnswered(); //vader gets a coin
 
         $game->roll(1); //odd roll gets maul out
 
+        self::assertFalse($game->inPenaltyBox[0]);
         self::assertFalse($game->inPenaltyBox[1]);
     }
 }
