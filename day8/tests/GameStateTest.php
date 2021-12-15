@@ -17,14 +17,14 @@ class GameStateTest extends TestCase
     {
         $state = new GameState();
 
-        assertSame(GameState::SETUP, $state->getCurrentState());
+        self::assertSame(GameState::SETUP, $state->getCurrentState());
         $state->next();
 
         foreach (range(1, 10) as $i) {
-            assertSame(GameState::ROLL, $state->getCurrentState());
+            self::assertSame(GameState::ROLL, $state->getCurrentState());
             $state->next();
 
-            assertSame(GameState::GUESS, $state->getCurrentState());
+            self::assertSame(GameState::GUESS, $state->getCurrentState());
             $state->next();
         }
     }
