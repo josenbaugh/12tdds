@@ -43,7 +43,6 @@ class GameTest extends TestCase
 
         $game->roll(1); //odd roll gets maul out
 
-        self::assertFalse($game->inPenaltyBox[0]);
         self::assertFalse($game->inPenaltyBox[1]);
     }
 }
