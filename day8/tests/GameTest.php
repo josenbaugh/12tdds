@@ -45,4 +45,62 @@ class GameTest extends TestCase
 
         self::assertFalse($game->inPenaltyBox[1]);
     }
+
+    /**
+     * @test
+     */
+    public function cannot_add_players_after_first_roll(): void
+    {
+        $this->expectException(\Exception::class);
+
+        $game = new Game();
+        $game->add('Vader');
+        $game->add('Maul');
+        $game->roll(2);
+        $game->add('Palpatine');
+    }
+
+    /**
+     * @test
+     */
+    public function cannot_roll_twice(): void
+    {
+        $this->expectException(\Exception::class);
+
+        $game = new Game();
+        $game->add('Vader');
+        $game->add('Maul');
+        $game->roll(2);
+        $game->roll(2);
+    }
+
+    /**
+     * @test
+     */
+    public function cannot_answer_correct_twice(): void
+    {
+        $this->expectException(\Exception::class);
+
+        $game = new Game();
+        $game->add('Vader');
+        $game->add('Maul');
+        $game->roll(2);
+        $game->wasCorrectlyAnswered();
+        $game->wasCorrectlyAnswered();
+    }
+
+    /**
+     * @test
+     */
+    public function cannot_answer_wrong_twice(): void
+    {
+        $this->expectException(\Exception::class);
+
+        $game = new Game();
+        $game->add('Vader');
+        $game->add('Maul');
+        $game->roll(2);
+        $game->wrongAnswer();
+        $game->wrongAnswer();
+    }
 }
