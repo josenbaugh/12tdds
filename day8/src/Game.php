@@ -18,6 +18,8 @@ class Game {
     var $currentPlayer = 0;
     var $isGettingOutOfPenaltyBox;
 
+    private $setupComplete = false;
+
     function  __construct() {
         $this->players = array();
         $this->places = array(0);
@@ -47,14 +49,17 @@ class Game {
 	}
 
 	function add($playerName) {
-	   array_push($this->players, $playerName);
-	   $this->places[$this->howManyPlayers()] = 0;
-	   $this->purses[$this->howManyPlayers()] = 0;
-	   $this->inPenaltyBox[$this->howManyPlayers()] = false;
+        if ($this->setupComplete)
+            throw new \Exception('You cannot add new players after the game has begun');
 
-	    $this->echoln($playerName . " was added");
-	    $this->echoln("They are player number " . count($this->players));
-		return true;
+        array_push($this->players, $playerName);
+        $this->places[$this->howManyPlayers()] = 0;
+        $this->purses[$this->howManyPlayers()] = 0;
+        $this->inPenaltyBox[$this->howManyPlayers()] = false;
+
+        $this->echoln($playerName . " was added");
+        $this->echoln("They are player number " . count($this->players));
+        return true;
 	}
 
 	function howManyPlayers() {
@@ -64,6 +69,8 @@ class Game {
 	function roll($roll) {
         if (!$this->isPlayable())
             throw new \Exception('Need more players!');
+
+        $this->setupComplete = true;
 
         $this->echoln($this->players[$this->currentPlayer] . " is the current player");
         $this->echoln("They have rolled a " . $roll);
