@@ -64,6 +64,9 @@ class Game {
 	}
 
 	function  roll($roll) {
+        if (!$this->isPlayable())
+            throw new \Exception('Need more players!');
+
 		echoln($this->players[$this->currentPlayer] . " is the current player");
 		echoln("They have rolled a " . $roll);
 
