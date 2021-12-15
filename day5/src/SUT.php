@@ -32,7 +32,16 @@ class SUT
 
     private function generateMicrocontrollerCommand(): string
     {
-        return $this->combineSequences($this->getLEDSequence());
+        $count = $this->calculateOn();
+        if ($count == 0)
+            return 'off/';
+        else if ( $count == 1000000)
+            return 'on/';
+        
+        $comand_string = $this->combineSequences($this->getLEDSequence());
+        $count = $this->calculateOn();
+
+        return $count > 500 ? 'on/'.$comand_string : 'off/'.$comand_string;
     }
 
     private function combineSequences(array $sequence): string
