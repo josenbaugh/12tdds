@@ -100,6 +100,11 @@ class Game {
 			$this->askQuestion();
 		}
 
+        if ($this->isGettingOutOfPenaltyBox) {
+            $this->inPenaltyBox[$this->currentPlayer] = false;
+            $this->isGettingOutOfPenaltyBox = false;
+        }
+
 	}
 
 	function  askQuestion() {
