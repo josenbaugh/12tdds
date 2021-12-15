@@ -59,3 +59,11 @@ TDD Tip
 Like last time the provided test input assumes the state of the last case. Does
 this new requirement change your original design? Is any of your past code (test
 or otherwise) useful for this case?
+
+My Thoughts
+-----------
+Again from the last day I think that our test here remains the same just
+expecting different output. Keeping this simple allows the freedom to refactor
+as we please but knowing that our solution is correct. The test is treating the
+code like a black box all it knows is to send in some string and expect back
+another.
