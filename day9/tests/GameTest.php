@@ -116,7 +116,7 @@ class GameTest extends TestCase
         $game->roll(2);
         $game->answer(true); //vader gets a coin
 
-        $game->roll(1); //odd roll gets maul out
+        $game->roll(2); //even roll keeps maul in jail, he shouldn't answer now
 
         $game->roll(1); //this would be vader's turn since maul shouldn't answer
     }
