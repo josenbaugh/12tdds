@@ -4,6 +4,10 @@ namespace tdd;
 
 use Generator;
 use PHPUnit\Framework\TestCase;
+use tdd\exceptions\CannotAddPlayersException;
+use tdd\exceptions\CannotAnswerException;
+use tdd\exceptions\CannotRollException;
+use tdd\exceptions\NeedMorePlayersException;
 use tdd\Game;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -18,7 +22,7 @@ class GameTest extends TestCase
         $game = new Game();
         $game->add('Vader');
 
-        $this->expectException(\Exception::class);
+        $this->expectException(NeedMorePlayersException::class);
         $game->roll(rand(0,5) + 1);
     }
 
@@ -51,7 +55,7 @@ class GameTest extends TestCase
      */
     public function cannot_add_players_after_first_roll(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(CannotAddPlayersException::class);
 
         $game = new Game();
         $game->add('Vader');
@@ -65,7 +69,7 @@ class GameTest extends TestCase
      */
     public function cannot_roll_twice(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(CannotRollException::class);
 
         $game = new Game();
         $game->add('Vader');
@@ -79,7 +83,7 @@ class GameTest extends TestCase
      */
     public function cannot_answer_correct_twice(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(CannotAnswerException::class);
 
         $game = new Game();
         $game->add('Vader');
@@ -94,7 +98,7 @@ class GameTest extends TestCase
      */
     public function cannot_answer_wrong_twice(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(CannotAnswerException::class);
 
         $game = new Game();
         $game->add('Vader');

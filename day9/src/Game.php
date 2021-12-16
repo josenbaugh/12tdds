@@ -2,6 +2,11 @@
 
 namespace tdd;
 
+use tdd\exceptions\CannotAddPlayersException;
+use tdd\exceptions\CannotAnswerException;
+use tdd\exceptions\CannotRollException;
+use tdd\exceptions\NeedMorePlayersException;
+
 const ECHO_OUT = false;
 
 class Game {
@@ -52,7 +57,7 @@ class Game {
 
 	function add($playerName) {
         if ($this->game_state->getCurrentState() !== GameState::SETUP)
-            throw new \Exception('You cannot add new players after the game has begun');
+            throw new CannotAddPlayersException('You cannot add new players after the game has begun');
 
         array_push($this->players, $playerName);
         $this->places[$this->howManyPlayers()] = 0;
@@ -70,13 +75,13 @@ class Game {
 
 	function roll($roll) {
         if (!$this->isPlayable())
-            throw new \Exception('Need more players!');
+            throw new NeedMorePlayersException('Need more players!');
 
         if ($this->game_state->getCurrentState() === GameState::SETUP)
             $this->game_state->next();
 
         if ($this->game_state->getCurrentState() !== GameState::ROLL)
-            throw new \Exception('You cannot roll at this time!');
+            throw new CannotRollException('You cannot roll at this time!');
 
         $this->echoln($this->players[$this->currentPlayer] . " is the current player");
         $this->echoln("They have rolled a " . $roll);
@@ -147,7 +152,7 @@ class Game {
     function answer(bool $correct)
     {
         if ($this->game_state->getCurrentState() !== GameState::GUESS)
-            throw new \Exception('You cannot answer at this time!');
+            throw new CannotAnswerException('You cannot answer at this time!');
         
         if ($correct)
             $return = $this->wasCorrectlyAnswered();
