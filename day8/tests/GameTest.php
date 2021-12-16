@@ -32,14 +32,14 @@ class GameTest extends TestCase
         $game->add('Maul');
 
         $game->roll(2);
-        $game->wasCorrectlyAnswered(); //vader gets a coin
+        $game->answer(true); //vader gets a coin
 
         $game->roll(1);
-        $game->wrongAnswer(); //maul goes to the penalty box
+        $game->answer(false); //maul goes to the penalty box
         self::assertTrue($game->inPenaltyBox[1]);
 
         $game->roll(2);
-        $game->wasCorrectlyAnswered(); //vader gets a coin
+        $game->answer(true); //vader gets a coin
 
         $game->roll(1); //odd roll gets maul out
 
@@ -85,8 +85,8 @@ class GameTest extends TestCase
         $game->add('Vader');
         $game->add('Maul');
         $game->roll(2);
-        $game->wasCorrectlyAnswered();
-        $game->wasCorrectlyAnswered();
+        $game->answer(true);
+        $game->answer(true);
     }
 
     /**
@@ -100,7 +100,7 @@ class GameTest extends TestCase
         $game->add('Vader');
         $game->add('Maul');
         $game->roll(2);
-        $game->wrongAnswer();
-        $game->wrongAnswer();
+        $game->answer(false);
+        $game->answer(false);
     }
 }
