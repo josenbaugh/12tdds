@@ -120,6 +120,8 @@ class Game {
         if ($this->isGettingOutOfPenaltyBox) {
             $this->inPenaltyBox[$this->currentPlayer] = false;
             $this->isGettingOutOfPenaltyBox = false;
+        } else if ($this->inPenaltyBox[$this->currentPlayer]) {
+            $this->game_state->next();
         }
 
         $this->game_state->next();
