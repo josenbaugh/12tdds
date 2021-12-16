@@ -80,8 +80,12 @@ class GameTest extends TestCase
 
     /**
      * @test
+     * @testWith [false, false]
+     *           [false, true]
+     *           [true, false]
+     *           [true, true]
      */
-    public function cannot_answer_correct_twice(): void
+    public function cannot_answer_twice(bool $answer1, bool $answer2): void
     {
         $this->expectException(CannotAnswerException::class);
 
@@ -89,22 +93,7 @@ class GameTest extends TestCase
         $game->add('Vader');
         $game->add('Maul');
         $game->roll(2);
-        $game->answer(true);
-        $game->answer(true);
-    }
-
-    /**
-     * @test
-     */
-    public function cannot_answer_wrong_twice(): void
-    {
-        $this->expectException(CannotAnswerException::class);
-
-        $game = new Game();
-        $game->add('Vader');
-        $game->add('Maul');
-        $game->roll(2);
-        $game->answer(false);
-        $game->answer(false);
+        $game->answer($answer1);
+        $game->answer($answer2);
     }
 }
