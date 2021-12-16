@@ -96,4 +96,28 @@ class GameTest extends TestCase
         $game->answer($answer1);
         $game->answer($answer2);
     }
+
+    /**
+     * @test
+     */
+    public function when_players_fail_the_get_out_of_jail_roll_they_should_not_answer(): void
+    {
+        $game = new Game();
+        $game->add('Vader');
+        $game->add('Maul');
+
+        $game->roll(2);
+        $game->answer(true); //vader gets a coin
+
+        $game->roll(1);
+        $game->answer(false); //maul goes to the penalty box
+        self::assertTrue($game->inPenaltyBox[1]);
+
+        $game->roll(2);
+        $game->answer(true); //vader gets a coin
+
+        $game->roll(1); //odd roll gets maul out
+
+        $game->roll(1); //this would be vader's turn since maul shouldn't answer
+    }
 }
