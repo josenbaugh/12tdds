@@ -18,9 +18,11 @@ class Game {
     var $currentPlayer = 0;
     var $isGettingOutOfPenaltyBox;
 
-    private $setupComplete = false;
+    private GameState $game_state;
 
     function  __construct() {
+        $this->game_state = new GameState();
+
         $this->players = array();
         $this->places = array(0);
         $this->purses  = array(0);
@@ -49,7 +51,7 @@ class Game {
 	}
 
 	function add($playerName) {
-        if ($this->setupComplete)
+        if ($this->game_state->getCurrentState() !== GameState::SETUP)
             throw new \Exception('You cannot add new players after the game has begun');
 
         array_push($this->players, $playerName);
@@ -70,7 +72,11 @@ class Game {
         if (!$this->isPlayable())
             throw new \Exception('Need more players!');
 
-        $this->setupComplete = true;
+        if ($this->game_state->getCurrentState() === GameState::SETUP)
+            $this->game_state->next();
+
+        if ($this->game_state->getCurrentState() !== GameState::ROLL)
+            throw new \Exception('You cannot roll at this time!');
 
         $this->echoln($this->players[$this->currentPlayer] . " is the current player");
         $this->echoln("They have rolled a " . $roll);
@@ -110,6 +116,8 @@ class Game {
             $this->inPenaltyBox[$this->currentPlayer] = false;
             $this->isGettingOutOfPenaltyBox = false;
         }
+
+        $this->game_state->next();
 	}
 
 	function askQuestion() {
@@ -135,6 +143,21 @@ class Game {
 		if ($this->places[$this->currentPlayer] == 10) return "Sports";
 		return "Rock";
 	}
+    
+    function answer(bool $correct)
+    {
+        if ($this->game_state->getCurrentState() !== GameState::GUESS)
+            throw new \Exception('You cannot answer at this time!');
+        
+        if ($correct)
+            $return = $this->wasCorrectlyAnswered();
+        else
+            $return = $this->wrongAnswer();
+
+        $this->game_state->next();
+
+        return $return;
+    }
 
 	function wasCorrectlyAnswered() {
         if ($this->inPenaltyBox[$this->currentPlayer]) {
