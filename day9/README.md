@@ -29,5 +29,5 @@ straightforward since that system is already in place. I should be able to just
 write a test that displays this behavior and fails, then just call
 $game_state->next() when the player fails to get out of the penalty box.
 
-Before that thought I just realized that I should break out the exceptions so
+Before that though I just realized that I should break out the exceptions so
 that when testing I can be sure I'm getting the correct exception not just any.
